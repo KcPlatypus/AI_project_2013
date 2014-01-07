@@ -36,16 +36,15 @@ img = filter_whiten(img);
 
 querySet(i).name = imgs(i).name;
 querySet(i).category = getCategory( imgs(i).name );
-totalCount = zeros(length(database));
+totalCount = zeros();
 
-h = waitbar(0,'Processing Query...');
-for iteration = 1 : 200
+for iteration = 1 : 100
     % get image patches for the query
     [X_patches rand_values]= getdata_imagepatch(img, windowSize, num_totalSamples);
     X = X_patches';
 
     % Dictioanry projection
-    %display 'Dictionary Projection:'
+    display 'Dictionary Projection:'
     re = X*Dic; % 153x512
 
     % Binary code
@@ -59,7 +58,7 @@ for iteration = 1 : 200
     querySet(i).code = Y;
     
     % Hamming distance
-    %display 'Hamming Distance:'
+    display 'Hamming Distance:'
     querySet(i).diffenence = zeros(length(database),1);
     for j = 1 : length(database),
        B1 = querySet(i).code;
@@ -67,16 +66,14 @@ for iteration = 1 : 200
        
        % calculate hamming distance
        querySet(i).difference(j,1) = hammingDist(B1, B2);
-       %display( sprintf('Checking Database: [%d/%d]', j,length(database)) );
+       display( sprintf('Checking Database: [%d/%d]', j,length(database)) );
     end
     [querySet(i).sortedValues querySet(i).sortedIndex] = sort(querySet(i).difference);
     for j = 1 : numRetrieve,
         index = querySet(i).sortedIndex(j);
         totalCount(index,1) = totalCount(index,1) + 1;
     end
-    waitbar(iteration/200);
 end
-close(h);
 
     [sortedValues, sortedIndex] = sort(totalCount, 'descend');
     
