@@ -7,7 +7,7 @@ Dic = B;
 
 % parametes for sampling
 windowSize = 14;% the window size of a patch
-num_totalSamples = 2000;% the number for sampling total patches
+num_totalSamples = 1000;% the number for sampling total patches
 rand_values = struct();
 
 % read the data from dataset

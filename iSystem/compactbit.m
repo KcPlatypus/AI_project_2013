@@ -15,7 +15,7 @@ for j = 1 : nbits
         end
     end
     sortedCount=sort(oneCount,'descend');
-    if oneCount(1,j)>sortedCount(1,ceil(nbits/20));
+    if oneCount(1,j)>sortedCount(1,ceil(nbits/15));
         bavg(1,j) = 1;
     end
 end

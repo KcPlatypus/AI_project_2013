@@ -72,7 +72,7 @@ img = filter_whiten(img);
     im = imread(img_path);
     fighandle1 = figure;
     set(fighandle1,'OuterPosition',[scrsz(2),scrsz(3),300,300]);
-    imshow(im);title(sprintf('Query Image %d %s', i, querySet(i).name));
+    imshow(im);title('Query Image');
     
     % show retrieved images
     fighandle2 = figure;
