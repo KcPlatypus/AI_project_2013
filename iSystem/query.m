@@ -3,17 +3,10 @@ querySet = struct();
 
 % parameters for query
 if ~exist('numQuery'),
-<<<<<<< HEAD
-    numQuery = 5;
-=======
     numQuery = 1;
-    [filename, pathname ]= uigetfile(sprintf('%s/queries/*.*g',pwd), 'Query');% get the query image by yourself
+    [filename, pathname ]= uigetfile(sprintf('%s/../queries/*.*g',pwd), 'Query');% get the query image by yourself
     filename = fullfile(pathname, filename);
     display(filename)
-%     file_path = sprintf('queries/%s',filename);
-%     display(file_path);
-%     figure;imshow(file_path);
->>>>>>> 89bbe66b3418d24a2ce8584d87bc639e4de2e7aa
 end
 if ~exist('numRetrieve'),
     numRetrieve = 6;
@@ -35,17 +28,11 @@ rand_values = struct();
 % query and read the data from "queries"
 path = '../queries/*.*g';
 imgs = dir(path);
-<<<<<<< HEAD
 i = numQuery;
-%for i = 1 : numQuery, 
-    img_path = sprintf('../queries/%s',imgs(i).name);
-=======
-for i = 1 : numQuery, 
-    %img_path = sprintf('queries/%s',imgs(i).name);
-    img_path = filename;
->>>>>>> 89bbe66b3418d24a2ce8584d87bc639e4de2e7aa
-    img = imread(img_path);
-    img = filter_whiten(img);
+img_path = filename;
+
+img = imread(img_path);
+img = filter_whiten(img);
 
     % get image patches for the query
     [X_patches rand_values]= getdata_imagepatch(img, windowSize, num_totalSamples);
@@ -81,13 +68,15 @@ for i = 1 : numQuery,
     [querySet(i).sortedValues querySet(i).sortedIndex] = sort(querySet(i).difference);
     
     % show query image
+    scrsz = get(0,'ScreenSize');
     im = imread(img_path);
-    figure; 
+    fighandle1 = figure;
+    set(fighandle1,'OuterPosition',[scrsz(2),scrsz(3),300,300]);
     imshow(im);title(sprintf('Query Image %d %s', i, querySet(i).name));
     
     % show retrieved images
-    figure;
-    title('Retrieved Images');
+    fighandle2 = figure;
+    set(fighandle2,'OuterPosition',[scrsz(3),scrsz(4),900,900]);
     topNumber = numRetrieve;
     if numRetrieve < 3
         Numrow = 1;
@@ -103,7 +92,7 @@ for i = 1 : numQuery,
         subplot(Numrow, Numcolumn, j);
         imshow(im);
     end
-    
+    suptitle('Retrieved Images');
     display( sprintf('Query Done: [%d/%d]', i,length(imgs)) );
 end
 
