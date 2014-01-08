@@ -22,7 +22,7 @@ Dic = B;
 
 % parameters for sampling patches
 windowSize = 14;% the window size of a patch
-num_totalSamples = 200;% the number for sampling total patches
+num_totalSamples = 800;% the number for sampling total patches
 rand_values = struct();
 
 % query and read the data from "queries"
