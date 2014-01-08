@@ -22,7 +22,7 @@ Dic = B;
 
 % parameters for sampling patches
 windowSize = 14;% the window size of a patch
-num_totalSamples = 800;% the number for sampling total patches
+num_totalSamples = 1000;% the number for sampling total patches
 rand_values = struct();
 
 % query and read the data from "queries"
@@ -36,7 +36,7 @@ img = filter_whiten(img);
 
 querySet(i).name = imgs(i).name;
 querySet(i).category = getCategory( imgs(i).name );
-totalCount = zeros(length(database));
+totalCount = ones(length(database));
 
 h = waitbar(0,'Processing Query...');
 for iteration = 1 : 200
@@ -72,8 +72,9 @@ for iteration = 1 : 200
     [querySet(i).sortedValues querySet(i).sortedIndex] = sort(querySet(i).difference);
     for j = 1 : numRetrieve,
         index = querySet(i).sortedIndex(j);
-        totalCount(index,1) = totalCount(index,1) + 1;
+        totalCount(index,1) = totalCount(index,1)*1.2;
     end
+    totalCount = totalCount.*0.9;
     waitbar(iteration/200);
 end
 close(h);
