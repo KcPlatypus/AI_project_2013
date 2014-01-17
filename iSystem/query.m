@@ -4,12 +4,12 @@ querySet = struct();
 % parameters for query
 if ~exist('numQuery'),
     numQuery = 1;
-    [filename, pathname ]= uigetfile(sprintf('%s/../queries/*.*g',pwd), 'Query');% get the query image by yourself
+    [filename, pathname]= uigetfile(sprintf('%s/../queries/*.*g',pwd), 'Query');% get the query image by yourself
     filename = fullfile(pathname, filename);
     display(filename)
 end
 if ~exist('numRetrieve'),
-    numRetrieve = 6;
+    numRetrieve = 8;
 end
 
 % load data from indexed database, dictionary
@@ -31,6 +31,13 @@ imgs = dir(path);
 i = numQuery;
 img_path = filename;
 
+% show query image
+scrsz = get(0,'ScreenSize');
+im = imread(img_path);
+fighandle1 = figure;
+set(fighandle1,'OuterPosition',[scrsz(2),scrsz(3),300,300]);
+imshow(im);title('Query Image');
+    
 img = imread(img_path);
 img = filter_whiten(img);
 
@@ -47,9 +54,12 @@ for iteration = 1 : 200
     % Dictioanry projection
     %display 'Dictionary Projection:'
     re = X*Dic; % 153x512
-
-    % Binary code
+    re = abs(re);
+    
+    % binary code
+    Average_re = sum(sum(re))/(size(re,1)*size(re,2));
     Y = zeros(size(re));
+    re = re-Average_re;
     Y(re>=0) = 1;
 
     % Compact bits
@@ -75,18 +85,11 @@ for iteration = 1 : 200
         totalCount(index,1) = totalCount(index,1)*1.2;
     end
     totalCount = totalCount.*0.9;
-    waitbar(iteration/200);
+    waitbar(iteration/100);
 end
 close(h);
 
     [sortedValues, sortedIndex] = sort(totalCount, 'descend');
-    
-    % show query image
-    scrsz = get(0,'ScreenSize');
-    im = imread(img_path);
-    fighandle1 = figure;
-    set(fighandle1,'OuterPosition',[scrsz(2),scrsz(3),300,300]);
-    imshow(im);title('Query Image');
     
     % show retrieved images
     fighandle2 = figure;

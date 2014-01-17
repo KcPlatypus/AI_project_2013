@@ -24,13 +24,15 @@ for i = 1 : length(imgs),
     X = X_patches';
 
     % dictioanry projection
-    display 'DICTIONARY'
+    % display 'DICTIONARY'
     re = X*Dic; % 153x512
-
-    % binary code
-    Y = zeros(size(re));
-    Y(re>=0) = 1;
+    re = abs(re);
     
+    % binary code
+    Average_re = sum(sum(re))/(size(re,1)*size(re,2));
+    Y = zeros(size(re));
+    re = re-Average_re;
+    Y(re>=0) = 1;
     % compact bits
     Y = compactbit(Y);
     
