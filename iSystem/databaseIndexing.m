@@ -17,17 +17,17 @@ for i = 1 : length(imgs),
     img_path = sprintf('../dataset/%s',imgs(i).name);
     img = imread(img_path);
     img = filter_whiten(img);
-
+    
     % get image patches
     [X_patches rand_values]= ...
         getdata_imagepatch(img, windowSize, num_totalSamples);
     X = X_patches';
 
     % dictioanry projection
-    % display 'DICTIONARY'
+    display 'DICTIONARY'
     re = X*Dic; % 153x512
     re = abs(re);
-    
+
     % binary code
     Average_re = sum(sum(re))/(size(re,1)*size(re,2));
     Y = zeros(size(re));

@@ -46,6 +46,8 @@ querySet(i).category = getCategory( imgs(i).name );
 totalCount = ones(length(database));
 
 h = waitbar(0,'Processing Query...');
+
+% Image encoding
 for iteration = 1 : 200
     % get image patches for the query
     [X_patches rand_values]= getdata_imagepatch(img, windowSize, num_totalSamples);
@@ -85,31 +87,31 @@ for iteration = 1 : 200
         totalCount(index,1) = totalCount(index,1)*1.2;
     end
     totalCount = totalCount.*0.9;
-    waitbar(iteration/100);
+    
+    waitbar(iteration/200);
 end
 close(h);
 
-    [sortedValues, sortedIndex] = sort(totalCount, 'descend');
+[sortedValues, sortedIndex] = sort(totalCount, 'descend');
     
-    % show retrieved images
-    fighandle2 = figure;
-    set(fighandle2,'OuterPosition',[scrsz(3),scrsz(4),900,900]);
-    if numRetrieve < 3
-        Numrow = 1;
-    else
-        Numrow = 2;
-    end
-    Numcolumn = ceil(numRetrieve/Numrow);
-    for j = 1 : numRetrieve,
-        index = sortedIndex(j);
-        db = database(index);
-        path = sprintf('../dataset/%s', db.name);
-        im = imread(path);
-        subplot(Numrow, Numcolumn, j);
-        imshow(im);
-    end
-    suptitle('Retrieved Images');
-    display( sprintf('Query Done: [%d/%d]', i,length(imgs)) );
+% show retrieved images
+fighandle2 = figure;
+set(fighandle2,'OuterPosition',[scrsz(3),scrsz(4),900,900]);
+if numRetrieve < 3
+    Numrow = 1;
+else
+    Numrow = 2;
 end
+Numcolumn = ceil(numRetrieve/Numrow);
+for j = 1 : numRetrieve,
+    index = sortedIndex(j);
+    db = database(index);
+    path = sprintf('../dataset/%s', db.name);
+    im = imread(path);
+    subplot(Numrow, Numcolumn, j);
+    imshow(im);
+end
+suptitle('Retrieved Images');
+display( sprintf('Query Done: [%d/%d]', i,length(imgs)) );
 
-%end
+end
