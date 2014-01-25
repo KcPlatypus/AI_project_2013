@@ -25,16 +25,18 @@ for i = 1 : length(imgs),
 
     % dictioanry projection
     display 'DICTIONARY'
-    re = X*Dic; % 153x512
-    re = abs(re);
+    % re = X*Dic; % 153x512
+    % reAbs = abs(re);
 
     % binary code
-    Average_re = sum(sum(re))/(size(re,1)*size(re,2));
-    Y = zeros(size(re));
-    re = re-Average_re;
-    Y(re>=0) = 1;
+    % Average_re = sum(sum(re))/(size(re,1)*size(re,2));
+    % Y = zeros(size(re));
+    % re = re-Average_re;
+    % Y(re>=0) = 1;
     % compact bits
-    Y = compactbit(Y);
+    % Y = compactbit(Y);
+    
+    Y = encode(X, Dic);
     
     % storing data to database
     database(i).name = imgs(i).name;

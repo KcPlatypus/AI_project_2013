@@ -1,4 +1,4 @@
-function output = filter(image)
+function output = filter_whiten(image)
   % the input is the images dataset with 2 dimensions 
   % (pixel,pixel)
   % to make iamge have the same overall contrast, normalize it to be same
@@ -20,9 +20,10 @@ function output = filter(image)
   
   % convert to frequency domain
   If=fft2(image);
+  disp(size(If));
+  disp(size(fftshift(filt)));
   imagew=real(ifft2(If.*fftshift(filt)));
   IMAGES=reshape(imagew,N*M,1);
-  
   % set to normalize with variance of pixels to be 0.1
   IMAGES=sqrt(0.1)*IMAGES/sqrt(mean(var(IMAGES)));
   IMAGES_result = reshape(IMAGES, N, M);

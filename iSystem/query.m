@@ -9,7 +9,7 @@ if ~exist('numQuery'),
     display(filename)
 end
 if ~exist('numRetrieve'),
-    numRetrieve = 8;
+    numRetrieve = 6;
 end
 
 % load data from indexed database, dictionary
@@ -48,25 +48,27 @@ totalCount = ones(length(database));
 h = waitbar(0,'Processing Query...');
 
 % Image encoding
-for iteration = 1 : 200
+for iteration = 1 : 10
     % get image patches for the query
     [X_patches rand_values]= getdata_imagepatch(img, windowSize, num_totalSamples);
     X = X_patches';
 
     % Dictioanry projection
     %display 'Dictionary Projection:'
-    re = X*Dic; % 153x512
-    re = abs(re);
-    
-    % binary code
-    Average_re = sum(sum(re))/(size(re,1)*size(re,2));
-    Y = zeros(size(re));
-    re = re-Average_re;
-    Y(re>=0) = 1;
+%     re = X*Dic; % 153x512
+%     re = abs(re);
+%     
+%     % binary code
+%     Average_re = sum(sum(re))/(size(re,1)*size(re,2));
+%     Y = zeros(size(re));
+%     re = re-Average_re;
+%     Y(re>=0) = 1;
+% 
+%     % Compact bits
+%     Y = compactbit(Y);
 
-    % Compact bits
-    Y = compactbit(Y);
-    
+    Y = encode(X, Dic);
+
     % storing data to querySet
     querySet(i).code = Y;
     
@@ -88,7 +90,7 @@ for iteration = 1 : 200
     end
     totalCount = totalCount.*0.9;
     
-    waitbar(iteration/200);
+    waitbar(iteration/10);
 end
 close(h);
 
